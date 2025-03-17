@@ -74,7 +74,7 @@ mod Bookstore {
     }
 
     #[abi(embed_v0)]
-    impl BookstoreImpl of super::IBookstore<ContractState> {
+    pub impl BookstoreImpl of super::IBookstore<ContractState> {
         fn add_book(ref self: ContractState, book: Book) {
             assert(self.owner.read() == get_caller_address(), 'Not owner');
             let book_id = self.book_count.read();
@@ -139,7 +139,8 @@ trait IPurchase<TContractState> {
 
 #[starknet::contract]
 mod Purchase {
-    use core::starknet::ContractAddress;
+    use super::IBookstoreDispatcherTrait;
+use core::starknet::ContractAddress;
     use super::IBookstoreDispatcher;
     use super::Book;
     use core::starknet::storage::{ StoragePointerReadAccess, StoragePointerWriteAccess};
